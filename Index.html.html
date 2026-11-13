@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>فصل كيمياء الورود – ثاني / 2</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lalezar&family=Tajawal:wght@400;500;700&display=swap">
+<style>
+:root{--card:#c2739a;--deep:#8e4a73;--glass:rgba(255,255,255,.25);--gold:#f3e3b4;--ink:#fff;--panel:#c7b4d6;--pink:#4a2a44;color-scheme:light}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--card:#7d4569;--deep:#3d2037;--glass:rgba(255,255,255,.14);--panel:#4d3a5c;--pink:#f5e8f1;color-scheme:dark}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;margin:0;overflow:hidden;background:#f3d9e6;font-family:'Tajawal',system-ui,sans-serif;color:var(--ink);touch-action:none;user-select:none;-webkit-user-select:none}
+#stage{position:fixed;inset:0}
+canvas{display:block;touch-action:none}
+.top{position:fixed;top:env(safe-area-inset-top,0px);inset-inline:0;display:flex;justify-content:space-between;align-items:center;padding:10px 12px;gap:8px;z-index:3}
+.pill{background:var(--deep);color:var(--ink);border:0;border-radius:99px;padding:8px 16px;font:700 15px 'Tajawal';box-shadow:0 2px 8px rgba(0,0,0,.25)}
+.title{font-family:'Lalezar';font-size:18px;background:var(--deep);padding:4px 14px;border-radius:99px;color:var(--gold)}
+#joy{position:fixed;left:18px;bottom:calc(env(safe-area-inset-bottom,0px) + 24px);width:120px;height:120px;border-radius:50%;background:var(--glass);border:2px solid rgba(255,255,255,.6);z-index:3;touch-action:none}
+#knob{position:absolute;left:35px;top:35px;width:50px;height:50px;border-radius:50%;background:var(--deep);opacity:.9}
+#act{position:fixed;inset-inline:0;bottom:calc(env(safe-area-inset-bottom,0px) + 150px);margin:auto;width:max-content;max-width:85vw;display:none;z-index:3;background:var(--gold);color:var(--deep);border:0;border-radius:99px;padding:12px 26px;font:700 18px 'Tajawal';box-shadow:0 4px 14px rgba(0,0,0,.3)}
+#hint{position:fixed;inset-inline:0;bottom:calc(env(safe-area-inset-bottom,0px) + 30px);text-align:center;z-index:2;pointer-events:none;font-size:13px;color:var(--deep);padding:0 150px 0 12px}
+#menu,#pn,#intro{position:fixed;z-index:6;display:none}
+#menu{top:calc(env(safe-area-inset-top,0px) + 56px);inset-inline:12px;max-width:340px;background:var(--deep);border-radius:20px;padding:10px;touch-action:auto}
+#menu button{display:block;width:100%;text-align:start;background:var(--glass);border:0;color:var(--ink);border-radius:14px;padding:10px 14px;margin:5px 0;font:500 16px 'Tajawal'}
+#pn,#intro{inset:0;background:rgba(40,15,35,.55);align-items:flex-end;justify-content:center;touch-action:auto}
+#pn.on,#intro.on{display:flex}
+.sheet{background:var(--card);width:100%;max-width:600px;max-height:82vh;overflow:auto;border-radius:26px 26px 0 0;padding:20px 20px calc(env(safe-area-inset-bottom,0px) + 24px);user-select:text;-webkit-user-select:text}
+#intro .sheet{border-radius:26px;margin:auto 14px;text-align:center}
+.sheet h2{font-family:'Lalezar';font-weight:400;font-size:30px;color:var(--gold);margin:0 0 8px;text-shadow:2px 2px 0 var(--deep)}
+.sheet h3{font-family:'Lalezar';font-weight:400;font-size:22px;color:var(--gold);margin:0}
+.sheet p{margin:6px 0;line-height:1.8}
+.box{background:var(--glass);border-radius:16px;padding:12px 14px;margin:10px 0;font-size:15.5px;line-height:1.8}
+.lt{background:var(--panel);color:var(--pink);border-radius:16px;padding:12px 14px;margin:10px 0;font-size:15.5px;line-height:1.8}
+.x{float:left;background:var(--deep);color:var(--ink);border:0;width:38px;height:38px;border-radius:50%;font-size:18px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.chips button,.q button{background:var(--glass);border:0;color:inherit;border-radius:99px;padding:8px 14px;font:500 15px 'Tajawal'}
+.chips button.on{background:var(--gold);color:var(--deep)}
+.q button{display:block;width:100%;text-align:start;border-radius:14px;margin:6px 0}
+.q button.ok{background:#6fae7c;color:#fff}.q button.no{background:#b0566a;color:#fff}
+.ph{height:44px;border-radius:14px;margin:10px 0}
+input[type=range]{width:100%;accent-color:var(--deep);direction:ltr}
+.go{background:var(--gold);color:var(--deep);border:0;border-radius:99px;padding:12px 30px;font:700 18px 'Tajawal';margin-top:8px}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<div class="top"><button class="pill" id="mb">☰ الأركان</button><span class="title">فصل كيمياء الورود · ثاني / 2</span></div>
+<div id="menu"></div>
+<div id="joy"><div id="knob"></div></div>
+<button id="act"></button>
+<div id="hint">اسحب الدائرة للمشي · اسحب الشاشة للالتفات</div>
+<div id="pn"><div class="sheet" id="sheet"></div></div>
+<div id="intro" class="on"><div class="sheet">
+<h2>🌸 أهلًا بك في الفصل</h2>
+<p>معرض أسبوع الكيمياء العالمي<br><b>العلاقة بين الكيمياء والورود</b></p>
+<div class="box">فصل ثاني / 2 فيه سبعة أركان، كل ركن فيه معلومات. امشِ بالدائرة (أو أسهم/WASD)، والتفت بسحب الشاشة، وعند الاقتراب من ركن اضغط «اقرأ». ويمكنك القفز لأي ركن من قائمة «الأركان».</div>
+<button class="go" id="start">ادخل الفصل</button></div></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+const FL=[
+['🌹','وردة الروز','أشهر أنواع الورود وأكثرها شهرة في العالم، وغالبًا ما يُقصد بها «الجورية التقليدية».','مركبات عطرية، مضادات أكسدة، وأحماض طبيعية تجعلها مفيدة للصحة والعلاج العطري وصناعة العطور ومستحضرات التجميل.','عطرها من الجيرانيول والسيترونيلول وفينيل إيثانول.'],
+['🌺','وردة الليلي','زهرة عطرية صغيرة بيضاء أو صفراء، برائحة قوية وجميلة خاصة في الليل، ولهذا سميت «وردة الليلي».','مركبات عطرية قوية، مضادات أكسدة، وأحماض طبيعية تجعلها مميزة في العطور والعلاج العطري وتحسين المزاج.','من مركبات عطرها اللينالول وبنزوات المثيل.'],
+['🪷','وردة الأوركيد','من أروع وأندر الزهور في العالم، وتُعرف بجمالها الفريد وأناقتها.','زيوت عطرية وفلافونويدات ومركبات مضادة للأكسدة، مفيدة في العطور ومستحضرات التجميل والعلاج العطري.','الفانيليا تُستخلص من قرون نوع من الأوركيد، ومركبها الفانيلين.'],
+['🌷','وردة التوليب','من أجمل الزهور بجمالها البسيط وألوانها الزاهية، وتعتبر رمزًا للحب والربيع.','الزيوت العطرية، الفلافونويدات، الأحماض العضوية والمركبات الفينولية: مفيدة في العطور والتجميل وحماية النبات.','ألوانه الحمراء والبنفسجية من الأنثوسيانين والصفراء من الكاروتينات.'],
+['🌻','دوار الشمس','من الزهور المميزة والمحبوبة، تُعرف بشكلها الجميل الذي يتبع حركة الشمس خلال النهار.','الزيوت الطيارة، الأحماض الدهنية، الفلافونويدات والمركبات الفينولية: مفيد للعطور والتجميل والتغذية الصحية.','زيت بذوره غني بحمض اللينوليك وفيتامين E.'],
+['🌼','وردة الكاميليا','زهرة أنيقة تُعرف بلونها الزاهي ونعومة بتلاتها، وترمز إلى الجمال والرقي.','الزيوت الطيارة، الأحماض الدهنية، الفلافونويدات والمركبات الفينولية: مفيدة للعطور والعناية بالبشرة والشعر.','نبات الشاي من العائلة نفسها، وغني بالكاتيكين المضاد للأكسدة.']];
+const Q=[['ما الصبغة المسؤولة عن اللون الأحمر والبنفسجي في الورود؟',['الكلوروفيل','الأنثوسيانين','الكاروتين'],1],['أي طريقة تستخدم بخار الماء لاستخراج الزيت العطري؟',['التقطير بالبخار','الترشيح','التبلور'],0],['من أي نبات تُستخلص الفانيليا؟',['التوليب','الأوركيد','دوار الشمس'],1]];
+
+// stations: id,poster title,emoji,wall,pos
+const ST=[
+{id:'intro',t:'العلاقة بين\nالكيمياء والورود',e:'🦋',w:'L',p:2.5,m:'العلاقة بين الكيمياء والورود'},
+{id:'types',t:'أنواع الورود\nودلالاتها',e:'🌹',w:'L',p:-2,m:'أنواع الورود ودلالاتها'},
+{id:'colors',t:'كيمياء\nالألوان',e:'🎨',w:'B',p:-5,m:'كيمياء الألوان'},
+{id:'perf',t:'استخراج\nالعطور',e:'🧴',w:'B',p:0,m:'استخراج العطور'},
+{id:'ph',t:'مختبر\nالحموضة',e:'🧪',w:'B',p:5,m:'مختبر الحموضة'},
+{id:'ben',t:'فوائد\nكيمياء الورود',e:'🔬',w:'R',p:-2,m:'فوائد كيمياء الورود'},
+{id:'quiz',t:'اختبر نفسك\nوالخاتمة',e:'🏆',w:'R',p:2.5,m:'اختبر نفسك والخاتمة'}];
+
+const BODY={
+intro:()=>`<h2>🦋 العلاقة بين الكيمياء والورود</h2><div class="box">العلاقة بين الكيمياء والورود قوية وجميلة جدًا، لأن الكيمياء تدخل في كثير من الجوانب المرتبطة بالورود.</div><div class="box">الورود ليست مجرد جمال طبيعي، بل تحتوي على مركبات كيميائية تؤثر على رائحتها ولونها ونموها.</div><div class="box"><b>باختصار:</b> الكيمياء هي اللغة الخفية للورود، تتحكم في لونها ورائحتها ونموها واستخداماتها للبشر.</div><div class="lt">💡 <b>إضافة:</b> رائحة الوردة تأتي من مواد عضوية متطايرة مثل التربينات والإسترات والكحولات العطرية. جزيئاتها صغيرة وخفيفة فتتبخر من البتلات وتصل إلى أنوفنا.</div>`,
+types:()=>`<h2>🌹 أنواع الورود ودلالاتها الكيميائية</h2><div class="chips" id="ch">${FL.map((f,i)=>`<button data-i="${i}">${f[0]} ${f[1].replace('وردة ','')}</button>`).join('')}</div><div id="fd" class="box">اختر وردة لتعرف دلالتها الكيميائية.</div>`,
+colors:()=>`<h2>🎨 كيمياء الألوان</h2><div class="box">لون البتلات صبغات كيميائية تمتص جزءًا من الضوء وتعكس الباقي.</div><div class="box">🔴🟣 <b>الأنثوسيانين:</b> أحمر وبنفسجي وأزرق، ويتغير حسب حموضة العصارة الخلوية.</div><div class="box">🟡🟠 <b>الكاروتينات:</b> أصفر وبرتقالي، سر لون دوار الشمس.</div><div class="box">🟢 <b>الكلوروفيل:</b> الأخضر في الأوراق والسيقان.</div><div class="lt">⚪ الكاميليا البيضاء لا تحتوي صبغة بيضاء، بل فقاعات هواء صغيرة تبعثر الضوء فنراها بيضاء.</div>`,
+perf:()=>`<h2>🧴 أهم طرق استخراج العطور من الورد</h2><div class="box"><h3>١- التقطير بالبخار (Steam Distillation)</h3><p>يمر بخار الماء على البتلات فيحمل جزيئات العطر المتطايرة، ثم يتكثف إلى ماء ورد وزيت عطري.</p></div><div class="box"><h3>٢- الاستخلاص بالمذيبات (Solvent Extraction)</h3><p>تُنقع بتلات الورود في مذيبات كيميائية مثل الإيثانول أو الهكسان.</p></div><div class="lt">💡 <b>إضافة:</b> الاستخلاص بالمذيبات يعطي «كونكريت» شمعي ثم «أبسولوت» نقي. وهناك طريقة ثالثة بثاني أكسيد الكربون تحت ضغط عالٍ. وكيلو واحد من زيت الورد يحتاج إلى عدة أطنان من البتلات، فهو من أغلى الزيوت. وتُقطف الورود فجرًا لأن تركيز الزيت يكون أعلى.</div>`,
+ph:()=>`<h2>🧪 مختبر الحموضة</h2><div class="lt">الأنثوسيانين في الورود مؤشر طبيعي للحموضة. حرّك المؤشر وشاهد اللون:<div class="ph" id="pb"></div><input type="range" id="pr" min="1" max="13" value="3" aria-label="pH"><div id="pt" style="text-align:center;font-weight:700"></div></div>`,
+ben:()=>`<h2>🔬 فوائد كيمياء الورود</h2><div class="box">١- استخراج العطور والزيوت العطرية.</div><div class="box">٢- الألوان الطبيعية.</div><div class="box">٣- الفوائد الطبية.</div><div class="box">٤- البحث العلمي وتطوير المنتجات.</div><div class="lt">💡 <b>إضافة:</b> تُستخدم صبغات الأنثوسيانين كملوّنات غذائية طبيعية بديلة للصناعية، ويدرس العلماء قدرتها كمضادات أكسدة.</div>`,
+quiz:()=>`<h2>🏆 اختبر نفسك</h2><div class="lt q" id="qz"></div><div class="box"><h3>الخاتمة</h3>الورود ليست مجرد زهور جميلة، بل هي كنز كيميائي طبيعي. بألوانها وعطورها وفوائدها الطبية، تظهر لنا الكيمياء كيف نحوّل جمال الطبيعة إلى عطور ومستحضرات وفوائد يومية.<br><b>ثاني / 2</b></div>`};
+const INIT={
+types(){const d=$('fd');document.querySelectorAll('#ch button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#ch button').forEach(k=>k.classList.remove('on'));b.classList.add('on');const f=FL[b.dataset.i];d.innerHTML=`<h3>${f[0]} ${f[1]}</h3><p>${f[2]}</p><p><b style="color:var(--gold)">الدلالة الكيميائية:</b> ${f[3]}</p><p>💡 <b>هل تعلم؟</b> ${f[4]}</p>`});},
+ph(){const r=$('pr');const u=()=>{const v=+r.value;$('pb').style.background=v<=3?'#e0405f':v<=5?'#d0568f':v<=7?'#9b6bc4':v<=9?'#5b7fd6':'#4aa57a';$('pt').textContent='pH = '+v+(v<7?' (حمضي)':v==7?' (متعادل)':' (قاعدي)')};r.oninput=u;u();},
+quiz(){Q.forEach(o=>{const w=document.createElement('div');w.innerHTML='<b>'+o[0]+'</b>';o[1].forEach((x,i)=>{const b=document.createElement('button');b.textContent=x;b.onclick=()=>{w.querySelectorAll('button').forEach(k=>k.className='');b.className=i===o[2]?'ok':'no'};w.appendChild(b)});w.style.marginBottom='12px';$('qz').appendChild(w)})}};
+function openP(id){$('sheet').innerHTML='<button class="x" id="xb" aria-label="إغلاق">✕</button>'+BODY[id]();$('pn').classList.add('on');$('xb').onclick=()=>$('pn').classList.remove('on');INIT[id]&&INIT[id]();}
+$('pn').addEventListener('pointerdown',e=>{if(e.target.id==='pn')$('pn').classList.remove('on')});
+
+// ---------- 3D ----------
+const R=new THREE.WebGLRenderer({antialias:true});R.setPixelRatio(Math.min(devicePixelRatio,2));R.setSize(innerWidth,innerHeight);R.shadowMap.enabled=true;R.shadowMap.type=THREE.PCFSoftShadowMap;$('stage').appendChild(R.domElement);
+const S=new THREE.Scene();S.background=new THREE.Color(0xf3d9e6);
+const C=new THREE.PerspectiveCamera(70,innerWidth/innerHeight,.1,60);C.rotation.order='YXZ';
+S.add(new THREE.HemisphereLight(0xffffff,0xe9c6d8,.85));
+const sun=new THREE.DirectionalLight(0xfff4f8,.55);sun.position.set(3,8,4);sun.castShadow=true;sun.shadow.mapSize.set(1024,1024);const sc=sun.shadow.camera;sc.left=-9;sc.right=9;sc.top=7;sc.bottom=-7;sc.near=1;sc.far=20;S.add(sun);
+[[-4,3,-3],[4,3,-3]].forEach(p=>{const l=new THREE.PointLight(0xffe2c0,.35,12);l.position.set(...p);S.add(l)});
+
+const M=(c,o={})=>new THREE.MeshStandardMaterial(Object.assign({color:c,roughness:.8},o));
+const MB=t=>new THREE.MeshBasicMaterial({map:t,transparent:true});
+const GL=M(0xd6eef7,{transparent:true,opacity:.35,roughness:.05,depthWrite:false});
+const mt=c=>typeof c==='object'?c:M(c);
+function add(g,mat,x,y,z){const m=new THREE.Mesh(g,mat);m.position.set(x,y,z);m.castShadow=!mat.transparent;m.receiveShadow=true;S.add(m);return m}
+const BX=(w,h,d,c,x,y,z)=>add(new THREE.BoxGeometry(w,h,d),mt(c),x,y,z);
+const CY=(a,b,h,c,x,y,z,n=16)=>add(new THREE.CylinderGeometry(a,b,h,n),mt(c),x,y,z);
+const SP=(r,c,x,y,z,sy=1)=>{const m=add(new THREE.SphereGeometry(r,14,10),mt(c),x,y,z);m.scale.y=sy;return m};
+function PL(w,h,mat,x,y,z,ry=0,rx=0,sh=0){const m=new THREE.Mesh(new THREE.PlaneGeometry(w,h),mat);m.position.set(x,y,z);m.rotation.set(rx,ry,0);if(sh)m.receiveShadow=true;S.add(m);return m}
+function WP(w,h,mat,wall,pos,y,off=.02){if(wall==='B')return PL(w,h,mat,pos,y,-6+off,0);if(wall==='F')return PL(w,h,mat,pos,y,6-off,Math.PI);if(wall==='L')return PL(w,h,mat,-8+off,y,pos,Math.PI/2);return PL(w,h,mat,8-off,y,pos,-Math.PI/2)}
+function tex(w,h,fn){const c=document.createElement('canvas');c.width=w;c.height=h;const x=c.getContext('2d');fn(x,w,h);return new THREE.CanvasTexture(c)}
+function rr(x,a,b,w,h,r){x.beginPath();x.moveTo(a+r,b);x.arcTo(a+w,b,a+w,b+h,r);x.arcTo(a+w,b+h,a,b+h,r);x.arcTo(a,b+h,a,b,r);x.arcTo(a,b,a+w,b,r);x.closePath()}
+const AR='bold 56px Tajawal,Tahoma,sans-serif';
+function poster(s){return tex(512,640,(x,w,h)=>{x.fillStyle='#c2739a';rr(x,0,0,w,h,40);x.fill();x.lineWidth=8;x.strokeStyle='#f3e3b4';rr(x,14,14,w-28,h-28,30);x.stroke();x.textAlign='center';x.font='150px sans-serif';x.fillText(s.e,w/2,190);x.fillStyle='#f3e3b4';x.direction='rtl';x.font=AR;s.t.split('\n').forEach((l,i)=>x.fillText(l,w/2,340+i*80));x.font='32px sans-serif';x.fillStyle='#fff';x.fillText('🌸  🌸  🌸',w/2,560)})}
+function banner(txt,w,h,fs){return tex(w,h,(x,W,H)=>{x.fillStyle='#8e4a73';rr(x,0,0,W,H,30);x.fill();x.fillStyle='#f3e3b4';x.textAlign='center';x.direction='rtl';x.font='bold '+fs+'px Tajawal,Tahoma,sans-serif';txt.split('\n').forEach((l,i,a)=>x.fillText(l,W/2,H/2+fs*.35+(i-(a.length-1)/2)*fs*1.2))})}
+
+// textures
+const marble=tex(512,512,(x,w,h)=>{x.fillStyle='#f3f1f4';x.fillRect(0,0,w,h);for(let i=0;i<14;i++){x.beginPath();let a=Math.random()*w,b=Math.random()*h;x.moveTo(a,b);for(let k=0;k<5;k++){a+=(Math.random()-.5)*160;b+=(Math.random()-.5)*160;x.quadraticCurveTo(a+(Math.random()-.5)*80,b+(Math.random()-.5)*80,a,b)}x.strokeStyle=`rgba(${120+Math.random()*40|0},${130+Math.random()*40|0},${160+Math.random()*50|0},${.08+Math.random()*.15})`;x.lineWidth=1+Math.random()*3;x.stroke()}});
+marble.wrapS=marble.wrapT=THREE.RepeatWrapping;marble.repeat.set(4,3);
+const rug=tex(256,512,(x,w,h)=>{x.fillStyle='#9a9aa2';x.fillRect(0,0,w,h);for(let i=0;i<3500;i++){x.fillStyle=Math.random()<.5?'rgba(0,0,0,.09)':'rgba(255,255,255,.09)';x.fillRect(Math.random()*w,Math.random()*h,2,2)}x.fillStyle='#6f6f78';x.fillRect(40,60,w-80,h-120);x.strokeStyle='#d8d8de';x.lineWidth=6;x.strokeRect(14,14,w-28,h-28)});
+const pf=[['#f29bb9','#f8cfdf'],['#ffffff','#f6c9da'],['#b48ad9','#e3d3f2']].map(c=>tex(256,256,(x)=>{x.translate(128,128);for(let l=0;l<2;l++){for(let i=0;i<8;i++){x.rotate(Math.PI/4);x.fillStyle=l?c[1]:c[0];x.beginPath();x.ellipse(0,-62+l*20,26-l*6,56-l*18,0,0,7);x.fill();x.strokeStyle='rgba(0,0,0,.1)';x.stroke()}x.rotate(.4)}x.fillStyle='#f6d36b';x.beginPath();x.arc(0,0,16,0,7);x.fill()}));
+const bfT=tex(128,128,x=>{x.font='96px sans-serif';x.textAlign='center';x.fillText('🦋',64,100)});
+const tabT=tex(256,180,(x,w,h)=>{x.fillStyle='#fbe9f1';x.fillRect(0,0,w,h);x.fillStyle='#8e4a73';x.textAlign='center';x.direction='rtl';x.font='bold 34px Tajawal,sans-serif';x.fillText('مقدمة',w/2,50);x.font='60px sans-serif';x.fillText('🌸',w/2,130)});
+const chem=tex(512,620,(x,w,h)=>{x.fillStyle='#fff';x.fillRect(0,0,w,h);const cs=['#e53935','#fb8c00','#fdd835','#43a047','#1e88e5','#8e24aa','#e91e63','#00acc1','#7cb342'];for(let i=0;i<110;i++){x.fillStyle=cs[i%9];x.fillRect(Math.random()*w,Math.random()*h,8,8)}x.font='bold 62px sans-serif';x.textAlign='center';'CHEMISTRY'.split('').forEach((c,i)=>{x.fillStyle=cs[i];x.fillText(c,52+i*51,120)});for(let r=0;r<5;r++)for(let c=0;c<9;c++){x.globalAlpha=.75;x.fillStyle=cs[(r+c)%9];x.fillRect(36+c*49,190+r*62,44,54)}x.globalAlpha=1;x.font='60px sans-serif';x.fillText('⚗️ 🌸 🧪',w/2,570)});
+const welc=tex(400,520,(x,w,h)=>{x.fillStyle='#fbf3ea';x.fillRect(0,0,w,h);x.strokeStyle='#d9b77a';x.lineWidth=6;x.strokeRect(16,16,w-32,h-32);x.fillStyle='#7a3f60';x.textAlign='center';x.direction='rtl';x.font='bold 44px Tajawal,Tahoma,sans-serif';['مرحبًا بكم','في معرض','كيمياء الورود','ثاني / 2'].forEach((l,i)=>x.fillText(l,w/2,130+i*75));x.font='54px sans-serif';x.fillText('🌸',w/2,460)});
+
+// room shell
+const wallMat=M(0xf8eaf1,{side:THREE.DoubleSide});
+PL(16,12,M(0xffffff,{map:marble,roughness:.28}),0,0,0,0,-Math.PI/2,1);
+PL(3.4,9.1,M(0xffffff,{map:rug,roughness:1}),0,.012,.95,0,-Math.PI/2,1);
+PL(16,12,M(0xffffff),0,3.6,0,0,Math.PI/2);
+for(let i=0;i<3;i++)for(let j=0;j<2;j++)PL(1.8,.5,new THREE.MeshBasicMaterial({color:0xfffbf0}),-5+i*5,3.59,-2.5+j*5,0,Math.PI/2);
+PL(16,3.6,wallMat,0,1.8,-6,0,0,1);PL(16,3.6,wallMat,0,1.8,6,Math.PI,0,1);PL(12,3.6,wallMat,-8,1.8,0,Math.PI/2,0,1);PL(12,3.6,wallMat,8,1.8,0,-Math.PI/2,0,1);
+const pinkW=M(0xd18db0,{side:THREE.DoubleSide}),goldW=M(0xf3e3b4),whiteW=M(0xffffff,{side:THREE.DoubleSide});
+[['B',16],['F',16],['L',12],['R',12]].forEach(([w,l])=>{WP(l,1.05,pinkW,w,0,.525,.015);WP(l,.05,goldW,w,0,1.07,.02);WP(l,.12,whiteW,w,0,.06,.025)});
+WP(6,.55,MB(banner('أسبوع الكيمياء العالمي 🦋 كيمياء الورود',1024,96,50)),'B',0,3.3,.03);
+WP(3.4,1.3,MB(banner('معرض كيمياء الورود\nثاني / 2',512,200,58)),'F',-3,2.3,.04);
+
+// windows
+function WIN(w,p){WP(1.6,1.4,whiteW,w,p,1.95,.03);WP(1.4,1.2,new THREE.MeshBasicMaterial({color:0xe6f4ff}),w,p,1.95,.035);WP(.05,1.2,whiteW,w,p,1.95,.04);WP(1.4,.05,whiteW,w,p,1.95,.04);[-.95,.95].forEach(o=>WP(.4,1.8,M(0xf4b6cf,{side:THREE.DoubleSide}),w,p+o,1.85,.05))}
+['L','R'].forEach(w=>{WIN(w,-4.9);WIN(w,4.9)});
+// entrance glass door
+PL(1.5,2.5,new THREE.MeshBasicMaterial({color:0xffffff}),3.5,1.27,5.96,Math.PI);
+[2.75,3.5,4.25].forEach(x=>BX(.07,2.6,.07,0x22262b,x,1.3,5.92));BX(1.57,.07,.07,0x22262b,3.5,2.58,5.92);BX(1.57,.07,.07,0x22262b,3.5,.03,5.92);
+[3.125,3.875].forEach(x=>BX(.7,2.5,.02,GL,x,1.27,5.9));[3.4,3.6].forEach(x=>BX(.02,.4,.03,0xcccccc,x,1.1,5.87));
+// bamboo plants
+function BAMB(x,z){CY(.2,.16,.3,0x2a2a2e,x,.15,z,20);for(let i=0;i<7;i++){const a=i*.9,r=.06+.05*(i%3),h=1.5+.25*(i%4);const st=CY(.015,.02,h,0x7cab52,x+Math.cos(a)*r,.3+h/2,z+Math.sin(a)*r);st.rotation.z=Math.cos(a)*.06;for(let k=0;k<4;k++)SP(.07,0x5f9a45,x+Math.cos(a)*r+Math.cos(k*1.6)*.1,.3+h*(.5+k*.14),z+Math.sin(a)*r+Math.sin(k*1.6)*.1,.2)}}
+BAMB(2.1,5.3);BAMB(4.9,5.3);BAMB(-5.6,5.3);BAMB(7.2,-5.4);
+// balloons
+function BAL(x,z,seed){const cols=[0xf29bb9,0xffffff,0xf8cfdf,0xe888ad,0xffffff];for(let i=0;i<5;i++){const a=i*1.3+seed,r=.18+.1*(i%2),bx=x+Math.cos(a)*r,bz=z+Math.sin(a)*r,h=2.1+.22*i%.9;const col=cols[i];SP(.27,M(col,{roughness:.15,metalness:.1,transparent:true,opacity:col===0xffffff?.6:.92}),bx,h,bz,1.2);CY(.004,.004,h-.3,0xffffff,bx,(h-.3)/2,bz,4)}}
+BAL(-7.3,-5.3,0);BAL(7.3,-5.3,1);BAL(-7.3,5.1,2);BAL(7.3,5.1,3);
+// wall flowers + butterflies
+[['B',-7.2,2.3,.8,0],['B',-2.7,2.5,.7,1],['B',2.7,2.6,.7,2],['B',7.2,2.2,.8,1],['L',.3,2.4,.8,0],['L',.3,1.5,.5,2],['L',-5.6,1.3,.5,1],['R',.3,2.4,.8,2],['R',.3,1.5,.5,0],['R',5.6,1.4,.5,1],['F',-6.5,2.2,.8,0],['F',-.6,2.1,.7,1],['F',6.6,2.3,.7,2],['F',-1.8,1.5,.45,2]].forEach(([w,p,y,s,k])=>WP(s,s,MB(pf[k]),w,p,y,.035));
+[['B',-3.9,2.2],['B',-1.6,2.0],['B',3.9,2.1],['L',-.5,2.9],['L',1.2,1.9],['R',1,2.8],['R',-.8,1.9],['F',-4.5,1.4],['F',1.6,2.2],['F',5.8,1.5],['B',1.7,2.8],['B',-6.6,1.5]].forEach(([w,p,y])=>WP(.34,.34,MB(bfT),w,p,y,.04));
+
+// props
+const Y=.87,AMB=M(0xd98a2b,{emissive:0x5a2a00,roughness:.3});
+function BQ(x,z,pal,s=1){CY(.12*s,.09*s,.34*s,GL,x,Y+.17*s,z);for(let i=0;i<9;i++){const a=i*2.4,r=.04+.12*Math.sqrt(i/9)*s;SP(.085*s,pal[i%pal.length],x+Math.cos(a)*r,Y+.42*s+.05*Math.cos(i*1.7)*s,z+Math.sin(a)*r,.85)}for(let i=0;i<5;i++){const a=i*1.3+.5;SP(.07*s,0x4f8a4a,x+Math.cos(a)*.15*s,Y+.36*s,z+Math.sin(a)*.15*s,.35)}}
+function CD(x,z){CY(.05,.06,.03,0xe9d6c6,x,Y+.015,z);CY(.03,.03,.32,0xfffaf0,x,Y+.19,z);SP(.022,new THREE.MeshBasicMaterial({color:0xffc94d}),x,Y+.37,z,1.6);const h=SP(.07,new THREE.MeshBasicMaterial({color:0xffd88a,transparent:true,opacity:.22}),x,Y+.38,z);h.castShadow=false}
+function CU(x,y,z){CY(.032,.026,.07,AMB,x,y+.04,z,12)}
+function TIER(x,z){BX(.95,.02,.5,GL,x,Y+.12,z);[-.45,.45].forEach(o=>BX(.04,.12,.5,GL,x+o,Y+.06,z));BX(.6,.02,.4,GL,x,Y+.3,z);[-.28,.28].forEach(o=>BX(.04,.3,.4,GL,x+o,Y+.15,z));for(let i=0;i<6;i++)CU(x+(i%3-1)*.3,Y+.13,z+(i<3?-.12:.12));for(let i=0;i<4;i++)CU(x+(i%2?-.15:.15),Y+.31,z+(i<2?-.09:.09))}
+function CUPS(x,z){CY(.3,.3,.02,0xf8f0f4,x,Y+.01,z,24);for(let i=0;i<7;i++){const a=i*Math.PI/3.5,r=i?.19:0,cx=x+Math.cos(a)*r,cz=z+Math.sin(a)*r;CY(.05,.04,.06,0xf3e2d0,cx,Y+.05,cz);SP(.055,0xfff4f8,cx,Y+.1,cz,.8);SP(.02,0xf29bb9,cx,Y+.15,cz)}}
+function GB(x,z){BX(.38,.26,.32,0xf3ead9,x,Y+.13,z);BX(.4,.04,.34,0xf3ead9,x,Y+.28,z);BX(.05,.3,.34,0xf29bb9,x,Y+.14,z);BX(.4,.05,.05,0xf29bb9,x,Y+.29,z);for(let i=0;i<5;i++){const a=i*1.26;SP(.07,0xa58ad0,x+Math.cos(a)*.09,Y+.33,z+Math.sin(a)*.09,.4)}SP(.04,0xf6d36b,x,Y+.35,z,.6)}
+function FK(x,z,c){CY(.025,.1,.22,GL,x,Y+.11,z);CY(.02,.085,.1,M(c,{transparent:true,opacity:.9}),x,Y+.06,z);CY(.028,.028,.1,GL,x,Y+.27,z)}
+function BK(x,z,c){CY(.055,.055,.14,GL,x,Y+.07,z);CY(.05,.05,.08,M(c,{transparent:true,opacity:.9}),x,Y+.045,z)}
+function TAB(x,z){BX(.42,.02,.3,0x2b2b30,x,Y+.01,z);PL(.38,.26,new THREE.MeshBasicMaterial({map:tabT}),x,Y+.022,z,0,-Math.PI/2)}
+function CAKE(x,z){CY(.16,.16,.02,0xf8f0f4,x,Y+.01,z,24);CY(.12,.12,.12,0xf8c9db,x,Y+.08,z,24);CY(.09,.09,.08,0xfde6ef,x,Y+.18,z,24);for(let i=0;i<5;i++)SP(.03,0xe0607a,x+Math.cos(i*1.26)*.06,Y+.23,z+Math.sin(i*1.26)*.06)}
+const redP=[0xc0334d,0xe0607a,0xf5b7c5,0xffffff],pinkP=[0xf29bb9,0xffffff,0xf8cfdf,0xe888ad],lilP=[0xb48ad9,0xd9c2ee,0xf29bb9,0xffffff];
+
+// stations
+const tabs=[],ROT={B:0,L:Math.PI/2,R:-Math.PI/2};
+ST.forEach(s=>{
+ const B=s.w==='B',L=s.w==='L';
+ s.tx=B?s.p:L?-6.95:6.95;s.tz=B?-4.95:s.p;
+ const px=B?s.p:L?-7.96:7.96,pz=B?-5.96:s.p;
+ tabs.push([s.tx,s.tz,B?1.5:.85,B?.85:1.5]);
+ const P=(u,v=0)=>B?[s.tx+u,s.tz+v]:L?[s.tx+v,s.tz+u]:[s.tx-v,s.tz+u];
+ BX(B?2.2:.9,.85,B?.9:2.2,0xfdfbfc,s.tx,.425,s.tz);
+ BX(B?2.5:.42,.012,B?.42:2.5,0xe58db0,s.tx,.862,s.tz);
+ BX(B?2:.03,2.4,B?.03:2,0xe9d6c6,B?px:px+(L?-.02:.02),1.85,B?pz-.02:pz);
+ PL(1.9,2.3,MB(poster(s)),px,1.85,pz,ROT[s.w]);
+ ({
+  intro(){GB(...P(-.6));BQ(...P(.55),pinkP);CD(...P(0,-.2))},
+  types(){BQ(...P(-.6),redP,1.2);BQ(...P(.6),lilP,1.2);CD(...P(0))},
+  colors(){FK(...P(-.8),0xf06292);FK(...P(-.5),0xab7bd1);FK(...P(-.2),0x64b5f6);BK(...P(.1,.1),0xffd54f);TAB(...P(.7))},
+  perf(){BQ(...P(-.8),redP,.9);TIER(...P(0));CD(...P(.7,-.15));CD(...P(.9,-.15))},
+  ph(){FK(...P(-.8),0xe0405f);FK(...P(-.5),0x9b6bc4);FK(...P(-.2),0x5b7fd6);BK(...P(.1,.1),0x4aa57a);BK(...P(.3,-.1),0xf06292);BQ(...P(.8),pinkP,.9)},
+  ben(){BQ(...P(-.85),pinkP,.9);CAKE(...P(-.3));CUPS(...P(.5))},
+  quiz(){CUPS(...P(-.7));BQ(...P(0),redP,1.3);GB(...P(.75));CD(...P(.4,-.2))}
+ })[s.id]();
+});
+// CHEMISTRY board + easel (like the real display)
+BX(1.5,1.8,.04,0xffffff,-2.7,.95,-5.6);PL(1.46,1.76,MB(chem),-2.7,.95,-5.575,0);
+BX(.05,.2,.4,0xcfa57a,-3.3,.1,-5.45);BX(.05,.2,.4,0xcfa57a,-2.1,.1,-5.45);
+tabs.push([-2.7,-5.55,.9,.5]);
+const el=BX(.04,1.7,.04,0xe8d5b5,2.3,.85,-5.4);el.rotation.z=.08;const er=BX(.04,1.7,.04,0xe8d5b5,3.1,.85,-5.4);er.rotation.z=-.08;const eb=BX(.04,1.7,.04,0xe8d5b5,2.7,.85,-5.8);eb.rotation.x=-.2;
+BX(1.05,1.35,.03,0xffffff,2.7,1.25,-5.36);PL(.98,1.28,MB(welc),2.7,1.25,-5.34,0);BX(1.1,.04,.08,0xe8d5b5,2.7,.55,-5.34);
+tabs.push([2.7,-5.45,.8,.5]);
+
+// ---------- controls ----------
+let X=0,Z=3.6,yaw=0,pit=0,jx=0,jy=0;const K={};
+addEventListener('keydown',e=>K[e.key.toLowerCase()]=1);addEventListener('keyup',e=>K[e.key.toLowerCase()]=0);
+const J=$('joy'),kn=$('knob');let jid=null;
+function jm(e){const r=J.getBoundingClientRect();let dx=e.clientX-(r.left+60),dy=e.clientY-(r.top+60);const l=Math.hypot(dx,dy),m=45;if(l>m){dx*=m/l;dy*=m/l}jx=dx/m;jy=dy/m;kn.style.transform=`translate(${dx}px,${dy}px)`}
+J.addEventListener('pointerdown',e=>{jid=e.pointerId;J.setPointerCapture(jid);jm(e);$('hint').style.display='none'});
+J.addEventListener('pointermove',e=>{if(e.pointerId===jid)jm(e)});
+const je=e=>{if(e.pointerId===jid){jid=null;jx=jy=0;kn.style.transform=''}};J.addEventListener('pointerup',je);J.addEventListener('pointercancel',je);
+let lid=null,lx=0,ly=0;const cv=R.domElement;
+cv.addEventListener('pointerdown',e=>{lid=e.pointerId;lx=e.clientX;ly=e.clientY;cv.setPointerCapture(lid)});
+cv.addEventListener('pointermove',e=>{if(e.pointerId!==lid)return;yaw+=(e.clientX-lx)*.005;pit=Math.max(-.6,Math.min(.6,pit+(e.clientY-ly)*.004));lx=e.clientX;ly=e.clientY});
+cv.addEventListener('pointerup',()=>lid=null);
+let near=null;const act=$('act');
+act.onclick=()=>near&&openP(near.id);
+// menu
+const mn=$('menu');ST.forEach((s,i)=>{const b=document.createElement('button');b.textContent=s.e+' '+s.m;b.onclick=()=>{
+ const dx=s.w==='B'?0:s.w==='L'?1:-1,dz=s.w==='B'?1:0;X=s.tx+dx*3;Z=s.tz+dz*3;yaw=Math.atan2(-(s.tx-X),-(s.tz-Z));pit=0;mn.style.display='none';};mn.appendChild(b)});
+$('mb').onclick=()=>mn.style.display=mn.style.display==='block'?'none':'block';
+$('start').onclick=()=>$('intro').classList.remove('on');
+addEventListener('resize',()=>{R.setSize(innerWidth,innerHeight);C.aspect=innerWidth/innerHeight;C.updateProjectionMatrix()});
+let t0=performance.now();
+(function loop(t){requestAnimationFrame(loop);const dt=Math.min((t-t0)/1000,.05);t0=t;
+ let f=-jy+((K.w||K.arrowup)?1:0)-((K.s||K.arrowdown)?1:0),s=jx+((K.d||K.arrowright)?1:0)-((K.a||K.arrowleft)?1:0);
+ if(K.q)yaw+=dt*1.6;if(K.e)yaw-=dt*1.6;
+ const v=3;X+=(-Math.sin(yaw)*f+Math.cos(yaw)*s)*v*dt;Z+=(-Math.cos(yaw)*f-Math.sin(yaw)*s)*v*dt;
+ X=Math.max(-7.2,Math.min(7.2,X));Z=Math.max(-5.3,Math.min(5.3,Z));
+ tabs.forEach(([tx,tz,hx,hz])=>{const dx=X-tx,dz=Z-tz;if(Math.abs(dx)<hx&&Math.abs(dz)<hz){if(hx-Math.abs(dx)<hz-Math.abs(dz))X=tx+Math.sign(dx||1)*hx;else Z=tz+Math.sign(dz||1)*hz}});
+ C.position.set(X,1.6,Z);C.rotation.y=yaw;C.rotation.x=pit;
+ let best=null,bd=3.6;ST.forEach(s=>{const d=Math.hypot(X-s.tx,Z-s.tz);if(d<bd){bd=d;best=s}});
+ if(best!==near){near=best;act.style.display=near?'block':'none';if(near)act.textContent='📖 اقرأ: '+near.m}
+ R.render(S,C)})(t0);
+</script>
+</body>
+</html>
